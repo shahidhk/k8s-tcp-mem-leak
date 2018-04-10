@@ -1,0 +1,23 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: tcp-leak-repro
+  namespace: default
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      run: leaker
+  template:
+    metadata:
+      labels:
+        run: leaker
+    spec:
+      nodeSelector:
+        node: leak-test
+      containers:
+      containers:
+      - image: shahidh/tcp-server:0.1
+        name: tcp-leak-repro-server
+      - image: shahidh/tcp-leaker-py:0.1
+        name: tcp-leak-repro-leaker
